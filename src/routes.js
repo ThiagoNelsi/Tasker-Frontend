@@ -1,22 +1,17 @@
 import React from 'react';
-import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
+import { BrowserRouter, Route, Switch} from 'react-router-dom';
 
 import Login from './pages/Login';
+import Register from './pages/Register';
 
-const PrivateRoutes = ({ component: Component, ...rest }) => {
-  console.log(rest);
-  return (
-    <Route {...rest} render={props => (
-      <Component {...props} />
-    )} />
-  )
-};
+import PrivateRoutes from './privateRoutes';
 
 const Routes = () => (
   <BrowserRouter>
     <Switch>
-      <Route exact path='/' component={() => <Login />} />
-      <PrivateRoutes exact path='/app' component={() => <h1>Deu Certo</h1>} />
+      <Route exact path='/login' component={() => <Login />} />
+      <Route exact path='/register' component={() => <Register />} />
+      <PrivateRoutes exact path='/dashboard' component={() => <h1>Deu Certo</h1>} />
     </Switch>
   </BrowserRouter>
 );

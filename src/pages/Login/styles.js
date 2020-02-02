@@ -40,7 +40,8 @@ export const InputBlock = styled.div`
   display: flex;
   flex-direction: column;
 
-  margin: 30px 15px 40px 15px;
+  margin: 30px 15px;
+  margin-bottom: ${props => (props.type === "email" ? "40px" : "20px")}
 `;
 
 export const Label = styled.label`
@@ -56,6 +57,7 @@ export const Input = styled.input`
 
   border-width: 0 0 1px 0;
   border-color: #CCC;
+  border-radius: 5px;
 
 
   margin-top: 10px;
@@ -63,11 +65,14 @@ export const Input = styled.input`
 
   font-size: 20px;
   font-family: 'Roboto', sans-serif;
-  color: #70ABAF;
+  color: rgb(90, 90, 90);
 `;
 export const Message = styled.span`
+  color: #333;
+  font-family: 'Roboto', sans-serif;
+  font-size: 15px;
   text-align: right;
-  margin: 0 10px;
+  margin: 0 10px 10px;
 `;
 export const LoginButton = styled.button`
 

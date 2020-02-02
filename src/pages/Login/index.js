@@ -1,14 +1,21 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 
-import { Container, Content, Title, Form, InputBlock, Label, Input, Message, LoginButton } from './style.js';
+import { api } from '../../api/api';
+import { Container, Content, Title, Form, InputBlock, Label, Input, Message, LoginButton } from './styles.js';
 
 function Login() {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
+
+    const response = await api.get('/list');
+
+    console.log(response);
+
   }
 
   return (
@@ -16,7 +23,7 @@ function Login() {
       <Content>
         <Title>Login no Tasker</Title>
         <Form onSubmit={handleSubmit}>
-          <InputBlock>
+          <InputBlock type="email">
             <Label htmlFor="email">Email</Label>
             <Input
               type="email"
@@ -24,7 +31,7 @@ function Login() {
               required
             />
           </InputBlock>
-          <InputBlock>
+          <InputBlock type="password">
             <Label htmlFor="password">Password</Label>
             <Input
               type="password"
@@ -33,7 +40,7 @@ function Login() {
             />
           </InputBlock>
 
-          <Message>Ainda não tem uma conta? <a href="/app">Cadastre-se!</a></Message>
+          <Message>Ainda não tem uma conta? <a href="/register">Cadastre-se!</a></Message>
 
           <LoginButton type="submit">Login</LoginButton>
 
