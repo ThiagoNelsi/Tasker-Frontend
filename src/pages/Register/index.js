@@ -1,7 +1,7 @@
-import React, { useState, Redirect } from 'react';
+import React, { useState } from 'react';
 
 import { Container, Content, Title, Form, InputBlock, Label, Input, LoginButton } from './styles';
-import { api } from '../../api/api';
+import api from '../../services/api';
 
 function Register() {
 
@@ -20,7 +20,7 @@ function Register() {
 
     const response = await api.post('/register', data);
 
-    sessionStorage.setItem('authorization', response.data.token);
+    sessionStorage.setItem('token', response.data.token);
 
   }
 

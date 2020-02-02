@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 
-import { api } from '../../api/api';
+import api from '../../services/api';
 import { Container, Content, Title, Form, InputBlock, Label, Input, Message, LoginButton } from './styles.js';
 
 function Login() {
@@ -12,9 +11,11 @@ function Login() {
   async function handleSubmit(event) {
     event.preventDefault();
 
-    const response = await api.get('/list');
+    const data = { email, password };
 
-    console.log(response);
+    const response = await api.post('/authenticate', data);
+    console.log(response.data);
+    localStorage.setItem('token', response.data.token);
 
   }
 

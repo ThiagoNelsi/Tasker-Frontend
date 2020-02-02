@@ -1,30 +1,35 @@
-import React from 'react';
-import { BrowserRouter, Route, Switch, Redirect} from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Route, Redirect} from 'react-router-dom';
 
-import { api } from './api/api';
+import api from './services/api';
 
-const PrivateRoutes = ({ component: Component, ...rest }) => {
+const PrivateRoute = ({ component: Component, ...rest }) => {
   
-  async function isAuthenticated() {
-    const token = `Bearer ${localStorage.getItem('authorization')}`;
-    const isAuth = await api.get('isAuthenticated',  { 
-      headers: { authorization: token }
-    });
-    return isAuth.isAuth;
-  }
+  const [isAuth, setIsAuth] = useState(false);
+
+  useEffect(() => {
+    async function isAuthenticated() {
+      try{
+        const response = await api.post('/isauth');
+        console.log(response.data)
+        return response.data.isAuth;
+      } catch (err) {
+        return false;
+      }
+    }
+    setIsAuth(isAuthenticated());
+  }, []);
 
   return (
     <Route {...rest} render={props => (
-      
-        isAuthenticated() ? (
-          <Component />
-        ) : (
-          <Redirect to={{ pathname: '/login', state: { from: props.location } }} />
-        )
-
+      isAuth ? (
+        <Component {...props} />
+      ) : (
+        <Redirect to={{ pathname: '/login', state: { from: props.location } }} />
+      )
     )} />
   )
+
 };
 
-
-export default PrivateRoutes;
+export default PrivateRoute;
