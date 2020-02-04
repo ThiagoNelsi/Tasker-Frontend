@@ -1,32 +1,19 @@
-import React, { useState, useEffect } from 'react';
-import { Route, Redirect} from 'react-router-dom';
-
-import api from './services/api';
+import React from 'react';
+import { Route, Redirect } from 'react-router-dom';
 
 const PrivateRoute = ({ component: Component, ...rest }) => {
-  
-  const [isAuth, setIsAuth] = useState(false);
 
-  useEffect(() => {
-    async function isAuthenticated() {
-      try{
-        const response = await api.post('/isauth');
-        console.log(response.data)
-        return response.data.isAuth;
-      } catch (err) {
-        return false;
-      }
-    }
-    setIsAuth(isAuthenticated());
-  }, []);
+  function isAuthenticated() {
+    return localStorage.getItem('token');
+  }
 
   return (
     <Route {...rest} render={props => (
-      isAuth ? (
+      isAuthenticated() ? (
         <Component {...props} />
       ) : (
-        <Redirect to={{ pathname: '/login', state: { from: props.location } }} />
-      )
+          <Redirect to={{ pathname: '/login', state: { from: props.location } }} />
+        )
     )} />
   )
 

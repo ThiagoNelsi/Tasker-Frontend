@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import api from '../../services/api';
 import { Container, Content, Title, Form, InputBlock, Label, Input, Message, LoginButton } from './styles.js';
 
-function Login() {
+function Login(props) {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -16,6 +16,7 @@ function Login() {
     const response = await api.post('/authenticate', data);
     console.log(response.data);
     localStorage.setItem('token', response.data.token);
+    window.location.href = '/';
 
   }
 
