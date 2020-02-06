@@ -2,9 +2,9 @@ import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTags, faClock, faAlignLeft, faTasks } from '@fortawesome/free-solid-svg-icons';
 
-import { Container, FieldName, TagArea, Tag, DeadlineArea, DescriptionArea, ActivityArea } from './styles.js';
+import { Container, FieldName, TagArea, Tag, DeadlineArea, DescriptionArea, ActivityArea } from './styles';
 
-function MainContent() {
+function MainContent({ task }) {
 
   const divStyle = {
     paddingBottom: '3vh',
@@ -21,13 +21,9 @@ function MainContent() {
           <h1>Tags</h1>
         </FieldName>
         <TagArea>
-          <Tag></Tag>
-          <Tag></Tag>
-          <Tag></Tag>
-          <Tag></Tag>
-          <Tag></Tag>
-          <Tag></Tag>
-          <Tag></Tag>
+          {task.description[0].tags.map(tag => (
+            <Tag color={tag.color}>{tag.text}</Tag>
+          ))}
           <span>+</span>
         </TagArea>
       </div>
@@ -37,7 +33,7 @@ function MainContent() {
           <h1>Prazo de Entrega</h1>
         </FieldName>
         <DeadlineArea>
-          05 fev 2020
+          {task.description[0].deadline ? task.description[0].deadline : '+'}
         </DeadlineArea>
       </div>
       <div style={divStyle}>
@@ -46,8 +42,7 @@ function MainContent() {
           <h1>Descrição</h1>
         </FieldName>
         <DescriptionArea>
-
-          <textarea placeholder='Adicione uma descrição...' />
+          {task.description[0].description ? task.description[0].description : <textarea placeholder='Adicione uma descrição...' />}
         </DescriptionArea>
       </div>
       <div style={divStyle}>

@@ -35,10 +35,15 @@ export const TagArea = styled.div`
 export const Tag = styled.div`
   min-width: 60px;
   height: 20px;
-  background: blue;
+  background: ${props => props.color};
   margin: 0 10px 10px 0;
+  padding: 1vw;
   border-radius: 10px;
   cursor: pointer;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 export const DeadlineArea = styled.div`

@@ -13,10 +13,14 @@ function Login(props) {
 
     const data = { email, password };
 
-    const response = await api.post('/authenticate', data);
-    console.log(response.data);
-    localStorage.setItem('token', response.data.token);
-    window.location.href = '/';
+    try {
+      const response = await api.post('/authenticate', data);
+      console.log(response.data);
+      localStorage.setItem('token', response.data.token);
+      window.location.href = '/';
+    } catch (err) {
+      console.log(err);
+    }
 
   }
 

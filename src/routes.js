@@ -7,14 +7,17 @@ import Project from './pages/Project';
 
 import PrivateRoute from './privateRoutes';
 
-const Routes = () => (
-  <BrowserRouter>
-    <Switch>
-      <Route exact path='/login' component={() => <Login />} />
-      <Route exact path='/register' component={() => <Register />} />
-      <PrivateRoute exact path='/' component={() => <Project />} />
-    </Switch>
-  </BrowserRouter>
-);
+
+function Routes({ changeTheme }) {
+  return (
+    <BrowserRouter>
+      <Switch>
+        <Route exact path='/login' component={() => <Login />} />
+        <Route exact path='/register' component={() => <Register />} />
+        <PrivateRoute exact path='/' isAuth={true} component={() => <Project changeTheme={changeTheme} />} />
+      </Switch>
+    </BrowserRouter>
+  );
+}
 
 export default Routes;

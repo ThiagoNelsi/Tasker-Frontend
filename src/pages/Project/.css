@@ -1,3 +1,44 @@
-b {
-  background: #f8c829;
+body {
+  overflow: hidden;
+}
+#themeBox {
+  border-radius: 20px 0 0 20px;
+  animation: boxEnter 0.5s backwards;
+}
+
+#lightBlue, #green, #yellow, #purplePink, #darkPurple, #dark {
+  width: 80px;
+  height: 80px;
+  border-radius: 10px;
+  cursor: pointer;
+  margin: 2vh 0;
+}
+
+#lightBlue {
+  background: linear-gradient(to bottom right, #D5E8E0, #0735b3);
+}
+#green {
+  background: linear-gradient(to bottom right, #b9e793, #8ae243);
+}
+#yellow {
+  background: linear-gradient(to bottom right, #d6b969, #f3be2c);
+}
+#purplePink {
+  background: linear-gradient(to bottom right, #7d50e7, coral);
+}
+#darkPurple {
+  background: linear-gradient(to bottom right, #310D20, #225560);
+}
+#dark {
+  background: #191919;
+}
+
+@keyframes boxEnter {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  } to {
+    opacity: 1;
+    transform: translateX(0%);
+  }
 }

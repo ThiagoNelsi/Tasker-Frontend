@@ -1,17 +1,25 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ThemeProvider } from 'styled-components';
 
 import Routes from './routes';
 
 import themes from './themes';
 
-const userTheme = Boolean(localStorage.getItem('theme')) ? localStorage.getItem('theme') : 'lightBlue';
+function App() {
 
-const App = () => (
-  <ThemeProvider theme={themes[themes.findIndex(theme => theme.title === userTheme)]}>
-    <Routes />
-  </ThemeProvider>
+  const [currentTheme, setCurrentTheme] = useState(Boolean(localStorage.getItem('theme')) ? localStorage.getItem('theme') : 'lightBlue')
 
-);
+  const changeTheme = (theme) => {
+    localStorage.setItem('theme', theme);
+    setCurrentTheme(theme);
+  }
+
+  return (
+    <ThemeProvider theme={themes[themes.findIndex(theme => theme.title === currentTheme)]}>
+      <Routes changeTheme={changeTheme} />
+    </ThemeProvider>
+  )
+
+};
 
 export default App;

@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import api from '../../services/api';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAlignLeft, faPlus, faTasks } from '@fortawesome/free-solid-svg-icons';
+import { faAlignLeft, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { faClock, faCommentDots, faCheckSquare } from '@fortawesome/free-regular-svg-icons';
 
 import {
   Header,
   Logo,
+  ThemeSelector,
+  ThemeBox,
   Container,
   Content,
   Tasks,
@@ -22,23 +24,22 @@ import {
   Comments,
   CheckBox,
   NewCard,
-  TaskDetailContainer,
-  TaskDetailBox,
-  TaskTitle,
-  TaskDetailHeader,
 } from './styles';
 
-import MainContent from './Components/MainContent';
+import './.css';
+import TaskDetail from './Components/TaskDetail';
 
-function Main() {
+function Main({ changeTheme }) {
 
-  const [display, setDisplay] = useState('flex');
+  const [overlayDisplay, setOverlayDisplay] = useState('none');
+  const [themeBoxDisplay, setThemeBoxDisplay] = useState('none');
   const [tasks, setTasks] = useState();
 
   useEffect(() => {
     async function getTasks() {
       const response = await api.get('/projects/5e3b4fff307b3c19d836d200');
       setTasks(response.data.project.tasks);
+      console.log(response.data.project.tasks);
     }
     getTasks();
   }, []);
@@ -47,9 +48,20 @@ function Main() {
 
   return (
     <>
-      <Container>
+      <Container id='container'>
         <Header>
           <Logo>Tasker</Logo>
+          <ThemeSelector>
+            <h1 onClick={() => setThemeBoxDisplay(themeBoxDisplay === 'flex' ? 'none' : 'flex')}>Temas</h1>
+            <ThemeBox id='themeBox' display={themeBoxDisplay}>
+              <div id='lightBlue' onClick={() => changeTheme('lightBlue')} />
+              <div id='green' onClick={() => changeTheme('green')} />
+              <div id='yellow' onClick={() => changeTheme('yellow')} />
+              <div id='purplePink' onClick={() => changeTheme('purplePink')} />
+              <div id='darkPurple' onClick={() => changeTheme('darkPurple')} />
+              <div id='dark' onClick={() => changeTheme('dark')} />
+            </ThemeBox>
+          </ThemeSelector>
         </Header>
         <Tasks>
           <Content>
@@ -62,7 +74,7 @@ function Main() {
                       <Tag color={tag.color} />
                     ))}
                   </Tags>
-                  <CardTitle onClick={() => setDisplay('flex')}>{task.title}</CardTitle>
+                  <CardTitle onClick={() => setOverlayDisplay('flex')}>{task.title}</CardTitle>
                   <Info>
 
                     {task.description[0].deadline ? (
@@ -127,19 +139,7 @@ function Main() {
           </Content>
         </Tasks>
       </Container>
-      <TaskDetailContainer display={display}>
-        <TaskDetailBox>
-          <TaskDetailHeader>
-
-            <TaskTitle>
-              <FontAwesomeIcon icon={faTasks} color='#000' style={{ fontSize: 25 }} />
-              <h1>Fazer o site</h1>
-            </TaskTitle>
-            <span onClick={() => setDisplay('none')}>+</span>
-          </TaskDetailHeader>
-          <MainContent style={{ gridArea: 'main' }} />
-        </TaskDetailBox>
-      </TaskDetailContainer>
+      <TaskDetail tasks={tasks} overlayDisplay={overlayDisplay} setOverlayDisplay={setOverlayDisplay} />
     </>
   )
 
