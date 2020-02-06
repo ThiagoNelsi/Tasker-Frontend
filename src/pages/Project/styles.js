@@ -85,7 +85,7 @@ export const Info = styled.div`
   height: 30px;
   background: '#000';
   display: flex;
-  flex-direction: row;
+  flex-flow: row wrap;
   justify-content: left;
   align-items: center;
 `;
@@ -184,17 +184,4 @@ export const TaskTitle = styled.div`
   }
 `;
 
-export const MainContent = styled.div`
-  grid-area: main;
-  border: 1px solid #000;
-`;
 
-export const AsideContent = styled.div`
-  grid-area: aside;
-  border: 1px solid #000;
-`;
-
-export const TagAndDeadline = styled.div`
-  display: flex;
-  flex-flow: row wrap;
-`;

@@ -3,7 +3,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
 import Login from './pages/Login';
 import Register from './pages/Register';
-import Main from './pages/Main';
+import Project from './pages/Project';
 
 import PrivateRoute from './privateRoutes';
 
@@ -12,7 +12,7 @@ const Routes = () => (
     <Switch>
       <Route exact path='/login' component={() => <Login />} />
       <Route exact path='/register' component={() => <Register />} />
-      <PrivateRoute exact path='/' component={() => <Main />} />
+      <PrivateRoute exact path='/' component={() => <Project />} />
     </Switch>
   </BrowserRouter>
 );
