@@ -2,6 +2,7 @@ import styled from 'styled-components';
 
 export const Container = styled.div`
   padding: 2vw;
+  overflow-y: auto;
 `;
 
 export const FieldName = styled.div`
@@ -83,5 +84,25 @@ export const ActivityArea = styled.div`
       background: rgba(0, 0, 0, 0.1);
       border-radius: 5px;
       padding: 15px;
+  }
+`;
+
+export const ActivityComment = styled.div`
+  width: calc(100% - 30px);
+  height: fit-content;
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 5px;
+  padding: 15px;
+  margin: 2vh 0;
+  align-items: center;
+  font-family: 'Roboto', sans-serif;
+  h1 {
+    font-size: 15px;
+    font-weight: 400;
+    margin-bottom: 5px;
+  }
+  p {
+    font-size: 12px;
+    text-align: justify;
   }
 `;

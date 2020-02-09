@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import api from '../../services/api';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAlignLeft, faPlus } from '@fortawesome/free-solid-svg-icons';
-import { faClock, faCommentDots, faCheckSquare } from '@fortawesome/free-regular-svg-icons';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
 import {
   Header,
@@ -14,34 +13,36 @@ import {
   Tasks,
   Box,
   BoxTitle,
-  Card,
-  Tags,
-  Tag,
-  CardTitle,
-  Info,
-  InfoItem,
-  Deadline,
-  Comments,
-  CheckBox,
   NewCard,
 } from './styles';
 
 import './.css';
+import Card from './Components/Card';
+import NewTaskOverlay from './Components/NewTaskOverlay';
 import TaskDetail from './Components/TaskDetail';
 
 function Main({ changeTheme }) {
 
-  const [overlayDisplay, setOverlayDisplay] = useState('none');
+
+  const projectId = window.location.pathname.split('/')[2];
+
+  const [detailOverlayDisplay, setDetailOverlayDisplay] = useState('none');
+
+  const [newTaskOverlayDisplay, setNewTaskOverlayDisplay] = useState('flex');
+  const [newTaskStatus, setNewTaskStatus] = useState('todo');
+
   const [themeBoxDisplay, setThemeBoxDisplay] = useState('none');
   const [tasks, setTasks] = useState();
+  const [showTask, setShowTask] = useState();
 
   useEffect(() => {
     async function getTasks() {
-      const response = await api.get('/projects/5e3b4fff307b3c19d836d200');
+      const response = await api.get(`/projects/${projectId}`);
       setTasks(response.data.project.tasks);
       console.log(response.data.project.tasks);
     }
     getTasks();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (!tasks) return <h1>Loading...</h1>;
@@ -67,53 +68,8 @@ function Main({ changeTheme }) {
           <Content>
             <Box>
               <BoxTitle> To Do </BoxTitle>
-              {tasks.map(task => (
-                <Card>
-                  <Tags>
-                    {task.description[0].tags.map(tag => (
-                      <Tag color={tag.color} />
-                    ))}
-                  </Tags>
-                  <CardTitle onClick={() => setOverlayDisplay('flex')}>{task.title}</CardTitle>
-                  <Info>
-
-                    {task.description[0].deadline ? (
-                      <InfoItem>
-                        <Deadline priority='red'>
-                          <FontAwesomeIcon icon={faClock} color='#fff' />
-                          <span>{task.description[0].deadline}</span>
-                        </Deadline>
-                      </InfoItem>
-                    ) : null
-                    }
-                    {task.description[0].description ? (
-                      <InfoItem>
-                        <FontAwesomeIcon icon={faAlignLeft} color='#999' />
-                      </InfoItem>
-                    ) : null
-                    }
-                    {task.description[0].comments ? (
-                      <InfoItem>
-                        <Comments>
-                          <FontAwesomeIcon icon={faCommentDots} color='#999' />
-                          <span>{task.description[0].comments.lenght}</span>
-                        </Comments>
-                      </InfoItem>
-                    ) : null
-                    }
-                    {task.description[0].checklist ? (
-                      <InfoItem>
-                        <CheckBox>
-                          <FontAwesomeIcon icon={faCheckSquare} color='#999' />
-                          <span>1/3</span>
-                        </CheckBox>
-                      </InfoItem>
-                    ) : null
-                    }
-                  </Info>
-                </Card>
-              ))}
-              <NewCard>
+              {tasks.map(task => task.status === 'todo' && <Card task={task} setShowTask={setShowTask} showTask={showTask} setOverlayDisplay={setDetailOverlayDisplay} />)}
+              <NewCard onClick={() => { setNewTaskStatus('todo'); setNewTaskOverlayDisplay('flex') }}>
                 <FontAwesomeIcon icon={faPlus} color='#ccc' />
                 <span>Adicionar cartão</span>
               </NewCard>
@@ -122,7 +78,8 @@ function Main({ changeTheme }) {
           <Content>
             <Box>
               <BoxTitle> Doing </BoxTitle>
-              <NewCard>
+              {tasks.map(task => task.status === 'doing' && <Card task={task} setShowTask={setShowTask} showTask={showTask} setOverlayDisplay={setDetailOverlayDisplay} />)}
+              <NewCard onClick={() => { setNewTaskStatus('doing'); setNewTaskOverlayDisplay('flex') }}>
                 <FontAwesomeIcon icon={faPlus} color='#ccc' />
                 <span>Adicionar cartão</span>
               </NewCard>
@@ -131,7 +88,8 @@ function Main({ changeTheme }) {
           <Content>
             <Box>
               <BoxTitle> Done </BoxTitle>
-              <NewCard>
+              {tasks.map(task => task.status === 'done' && <Card task={task} setShowTask={setShowTask} showTask={showTask} setOverlayDisplay={setDetailOverlayDisplay} />)}
+              <NewCard onClick={() => { setNewTaskStatus('donee'); setNewTaskOverlayDisplay('flex') }}>
                 <FontAwesomeIcon icon={faPlus} color='#ccc' />
                 <span>Adicionar cartão</span>
               </NewCard>
@@ -139,7 +97,8 @@ function Main({ changeTheme }) {
           </Content>
         </Tasks>
       </Container>
-      <TaskDetail tasks={tasks} overlayDisplay={overlayDisplay} setOverlayDisplay={setOverlayDisplay} />
+      <TaskDetail task={showTask} overlayDisplay={detailOverlayDisplay} setOverlayDisplay={setDetailOverlayDisplay} />
+      <NewTaskOverlay overlayDisplay={newTaskOverlayDisplay} setOverlayDisplay={setNewTaskOverlayDisplay} status={newTaskStatus} />
     </>
   )
 
