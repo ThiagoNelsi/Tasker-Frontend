@@ -1,7 +1,11 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Route, Redirect } from 'react-router-dom';
 
-const PrivateRoute = ({ component: Component, isAuth, ...rest }) => {
+import { appContext } from './context';
+
+const PrivateRoute = ({ component: Component, ...rest }) => {
+
+  const { isAuth } = useContext(appContext);
 
   return (
     <Route {...rest} render={props => (

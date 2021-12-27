@@ -1,12 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
+import { appContext } from '../../context';
 
 import api from '../../services/api';
 import { Container, Content, Title, Form, InputBlock, Label, Input, Message, LoginButton } from './styles.js';
 
 function Login(props) {
 
+  const { isAuth, setIsAuth } = useContext(appContext);
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const history = useHistory();
+
+  useEffect(() => {
+    if (isAuth) history.push('/');
+  }, [isAuth]);
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -15,9 +24,8 @@ function Login(props) {
 
     try {
       const response = await api.post('/authenticate', data);
-      console.log(response.data);
-      localStorage.setItem('token', response.data.token);
-      window.location.href = '/';
+      sessionStorage.setItem('token', response.data.token);
+      setIsAuth(true);
     } catch (err) {
       console.log(err);
     }

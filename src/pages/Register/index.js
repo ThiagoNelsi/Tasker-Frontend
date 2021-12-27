@@ -18,9 +18,13 @@ function Register() {
       password,
     }
 
-    const response = await api.post('/register', data);
-
-    sessionStorage.setItem('token', response.data.token);
+    try {
+      const response = await api.post('/register', data);
+      sessionStorage.setItem('token', response.data.token);
+      window.location.href = '/';
+    } catch (err) {
+      console.log(err);
+    }
 
   }
 
