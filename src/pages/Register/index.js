@@ -1,13 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
+
+import { appContext } from '../../context';
 
 import { Container, Content, Title, Form, InputBlock, Label, Input, LoginButton } from './styles';
 import api from '../../services/api';
 
 function Register() {
 
+  const { isAuth, setIsAuth } = useContext(appContext);
+  const history = useHistory();
+
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  useEffect(() => {
+    if (isAuth) history.push('/');
+  }, [isAuth]);
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -21,7 +31,7 @@ function Register() {
     try {
       const response = await api.post('/register', data);
       sessionStorage.setItem('token', response.data.token);
-      window.location.href = '/';
+      setIsAuth(true);
     } catch (err) {
       console.log(err);
     }
